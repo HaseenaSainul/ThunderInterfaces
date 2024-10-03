@@ -74,6 +74,7 @@
 #include <interfaces/IRustBridge.h>
 #include <interfaces/IScriptEngine.h>
 #include <interfaces/ISecureShellServer.h>
+#include <interfaces/ISecurityPerformance.h>
 #include <interfaces/IStream.h>
 #include <interfaces/IStore.h>
 #include <interfaces/IStoreCache.h>
