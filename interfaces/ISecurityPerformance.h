@@ -37,9 +37,9 @@ namespace Exchange {
 
         virtual Core::hresult Sum (const uint32_t a /* @restrict: 0..10000 */, const uint32_t b /* @restrict: 0..10000 */, uint32_t& sum /* @out */) const = 0;
    
-        virtual uint32_t Send(const uint16_t sendSize /* @restrict: 0..65535 */, const uint8_t buffer[] /* @length:sendSize @in */ ) = 0;
-        virtual uint32_t Receive(uint16_t& bufferSize /* @inout @restrict: 0..65535 */, uint8_t buffer[] /* @length:bufferSize @out */) const = 0;
-        virtual uint32_t Exchange(uint16_t& bufferSize /* @inout @restrict: 0..65535 */, uint8_t buffer[] /* @length:bufferSize @maxlength:maxBufferSize @inout*/, const uint16_t maxBufferSize) = 0;
+        virtual uint32_t Send(const uint16_t sendSize /* @restrict: 8K-1 */, const uint8_t buffer[] /* @length:sendSize @in */ ) = 0;
+        virtual uint32_t Receive(uint16_t& bufferSize /* @inout @restrict: 8K-1 */, uint8_t buffer[] /* @length:bufferSize @out */) const = 0;
+        virtual uint32_t Exchange(uint16_t& bufferSize /* @inout @restrict: 8K-1 */, uint8_t buffer[] /* @length:bufferSize @maxlength:maxBufferSize @inout*/, const uint16_t maxBufferSize) = 0;
     };
 }
 }
