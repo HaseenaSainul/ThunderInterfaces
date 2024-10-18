@@ -83,6 +83,7 @@ namespace Exchange {
         struct AddressData {
             string Name /* @brief Interface name */;
             string Mac /* @brief Interface MAC address */;
+            IStringIterator* Ip /* @brief An array of Interface IP address */;
         };
 
         /* @json:omit */
@@ -178,7 +179,15 @@ namespace Exchange {
         typedef RPC::IIteratorType<MS12Profile, ID_DEVICE_CAPABILITIES_AUDIO_MS12_PROFILE> IMS12ProfileIterator;
 
         struct DeviceAudioCapabilitiesData {
-            AudioOutput audioPort /* @brief Audio Output support */;
+            struct AudioOutputCapabilities {
+                AudioOutput audioPort /* @brief Audio Output support */;
+                IAudioCapabilityIterator* audiocapabilities /* @brief Audio capabilities for the specified audio port */;
+                IMS12CapabilityIterator* ms12capabilities /* @brief Audio ms12 capabilities for the specified audio port */;
+                IMS12ProfileIterator* ms12profiles /* @brief Audio ms12 profiles for the specified audio port */;
+            };
+
+            using IAudioOutputCapabilitiesIterator = RPC::IIteratorType<AudioOutputCapabilities, ID_DEVICE_CAPABILITIES_AUDIO_CAPABILITIES>;
+            IAudioOutputCapabilitiesIterator* audioOutputCapabilities /* @brief An array of AudioOutputCapabilities */;
         };
 
         // @alt supportedaudioports
@@ -252,18 +261,21 @@ namespace Exchange {
         typedef RPC::IIteratorType<ScreenResolution, ID_DEVICE_CAPABILITIES_RESOLUTION> IScreenResolutionIterator;
 
         struct DeviceVideoCapabilitiesData {
-        struct VideoOutputCapabilities {
-            CopyProtection hdcp /* @brief HDCP support */;
-            VideoOutput videoDisplay /* @brief Video Output support */;
-            ScreenResolution defaultResolution /* @brief Default resolution */;
-        };
+            struct VideoOutputCapabilities {
+                CopyProtection hdcp /* @brief HDCP support */;
+                VideoOutput videoDisplay /* @brief Video Output support */;
+                IScreenResolutionIterator* resolutions /* @brief  Supported resolutions */;
+                ScreenResolution defaultResolution /* @brief Default resolution */;
+            };
 
-        using IVideoOutputCapabilitiesIterator = RPC::IIteratorType<VideoOutputCapabilities, ID_DEVICE_CAPABILITIES_VIDEO_CAPABILITIES>;
+            using IVideoOutputCapabilitiesIterator = RPC::IIteratorType<VideoOutputCapabilities, ID_DEVICE_CAPABILITIES_VIDEO_CAPABILITIES>;
             string hostEdid /* @brief EDID of the host */;
             bool hdr /* @brief Is HDR supported by this device */;
             bool atmos /* @brief Is Atmos supported by this device */;
             bool cec /* @brief Is CEC supported by this device */;
+            IVideoOutputCapabilitiesIterator* videoOutputCapabilities /* @brief An array of VideoOutputCapabilities */;
         };
+
         // @alt supportedvideodisplays
         // @property
         // @brief Retrieves VideoOutputs
