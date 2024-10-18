@@ -139,37 +139,37 @@ namespace Exchange {
         virtual ~IDeviceAudioCapabilities() override = default;
 
         enum AudioOutput : uint8_t {
-            AUDIO_OTHER,
-            AUDIO_RF_MODULATOR,
-            AUDIO_ANALOG,
-            AUDIO_SPDIF, //over RCA or TOSLINK
-            AUDIO_HDMI0,
-            AUDIO_HDMI1,
-            AUDIO_DISPLAYPORT
+            AUDIO_OTHER /* @text: OTHER */,
+            AUDIO_RF_MODULATOR /* @text: RF_MODULATOR */,
+            AUDIO_ANALOG /* @text: ANALOG */,
+            AUDIO_SPDIF /* @text: SPDIF0 */, //over RCA or TOSLINK
+            AUDIO_HDMI0 /* @text: HDMI0 */,
+            AUDIO_HDMI1 /* @text: HDMI1 */,
+            AUDIO_DISPLAYPORT /* @text: DISPLAYPORT */
         };
 
         enum AudioCapability : uint8_t {
-            AUDIOCAPABILITY_NONE,
-            ATMOS,
-            DD,
-            DDPLUS,
-            DAD,
-            DAPV2,
-            MS12
+            AUDIOCAPABILITY_NONE /* @text: audiocapability_none */,
+            ATMOS /* @text: atmos */,
+            DD /* @text: dd */,
+            DDPLUS /* @text: ddplus */,
+            DAD /* @text: dad */,
+            DAPV2 /* @text: dapv2 */,
+            MS12 /* @text: ms12 */
         };
 
         enum MS12Capability : uint8_t {
-            MS12CAPABILITY_NONE,
-            DOLBYVOLUME,
-            INTELIGENTEQUALIZER,
-            DIALOGUEENHANCER
+            MS12CAPABILITY_NONE /* @text: ms12capability_none */,
+            DOLBYVOLUME /* @text: dolbyvolume */,
+            INTELIGENTEQUALIZER /* @text: inteligentequalizer */,
+            DIALOGUEENHANCER /* @text: dialogueenhancer */
         };
 
         enum MS12Profile : uint8_t {
-            MS12PROFILE_NONE,
-            MUSIC,
-            MOVIE,
-            VOICE
+            MS12PROFILE_NONE /* @text: ms12profile_none */,
+            MUSIC /* @text: music */,
+            MOVIE /* @text: movie */,
+            VOICE /* @text: voice */
         };
 
         typedef RPC::IIteratorType<AudioOutput, ID_DEVICE_CAPABILITIES_AUDIO_OUTPUT> IAudioOutputIterator;
@@ -204,62 +204,61 @@ namespace Exchange {
         virtual ~IDeviceVideoCapabilities() override = default;
 
         enum VideoOutput : uint8_t {
-            VIDEO_OTHER,
-            VIDEO_RF_MODULATOR,
-            VIDEO_COMPOSITE, // also composite over SCART
-            VIDEO_SVIDEO,
-            VIDEO_COMPONENT,
-            VIDEO_SCART_RGB,
-            VIDEO_HDMI0,
-            VIDEO_HDMI1,
-            VIDEO_DISPLAYPORT // also DisplayPort over USB-C
+            VIDEO_OTHER /* @text: OTHER */,
+            VIDEO_RF_MODULATOR /* @text: RF_MODULATOR */,
+            VIDEO_COMPOSITE /* @text: COMPOSITE */, // also composite over SCART
+            VIDEO_SVIDEO /* @text: SVIDEO */,
+            VIDEO_COMPONENT /* @text: COMPONENT */,
+            VIDEO_SCART_RGB /* @text: SCART_RGB */,
+            VIDEO_HDMI0 /* @text: HDMI0 */,
+            VIDEO_HDMI1 /* @text:  HDMI1*/,
+            VIDEO_DISPLAYPORT /* @text: DISPLAYPORT */ // also DisplayPort over USB-C
         };
 
         enum ScreenResolution : uint8_t {
-            ScreenResolution_Unknown = 0,
-            ScreenResolution_480i = 1,
-            ScreenResolution_480p = 2,
-            ScreenResolution_576i = 3,
-            ScreenResolution_576p = 4,
-            ScreenResolution_576p50Hz = 5,
-            ScreenResolution_720p = 6,
-            ScreenResolution_720p50Hz = 7,
-            ScreenResolution_1080i = 8,
-            ScreenResolution_1080i25Hz = 9,
-            ScreenResolution_1080i50Hz = 10,
-            ScreenResolution_1080p = 11,
-            ScreenResolution_1080p24Hz = 12,
-            ScreenResolution_1080p25Hz = 13,
-            ScreenResolution_1080p30Hz = 14,
-            ScreenResolution_1080p50Hz = 15,
-            ScreenResolution_1080p60Hz = 16,
-            ScreenResolution_2160p30Hz = 17,
-            ScreenResolution_2160p50Hz = 18,
-            ScreenResolution_2160p60Hz = 19,
-            ScreenResolution_4320p30Hz = 20,
-            ScreenResolution_4320p60Hz = 21
+            ScreenResolution_Unknown = 0 /* @text: Unknown */,
+            ScreenResolution_480i = 1 /* @text: 480i */,
+            ScreenResolution_480p = 2 /* @text: 480p */,
+            ScreenResolution_576i = 3 /* @text: 576i */,
+            ScreenResolution_576p = 4 /* @text: 576p */,
+            ScreenResolution_576p50Hz = 5 /* @text: 576p50 */,
+            ScreenResolution_720p = 6 /* @text: 720p */,
+            ScreenResolution_720p50Hz = 7 /* @text: 720p50 */,
+            ScreenResolution_1080i = 8 /* @text: 1080i */,
+            ScreenResolution_1080i25Hz = 9 /* @text: 1080i25 */,
+            ScreenResolution_1080i50Hz = 10 /* @text: 1080i50 */,
+            ScreenResolution_1080p = 11 /* @text: 1080p */,
+            ScreenResolution_1080p24Hz = 12 /* @text: 1080p24 */,
+            ScreenResolution_1080p25Hz = 13 /* @text: 1080p25 */,
+            ScreenResolution_1080p30Hz = 14 /* @text: 1080p30 */,
+            ScreenResolution_1080p50Hz = 15 /* @text: 1080p50 */,
+            ScreenResolution_1080p60Hz = 16 /* @text: 1080p60 */,
+            ScreenResolution_2160p30Hz = 17 /* @text: 2160p30 */,
+            ScreenResolution_2160p50Hz = 18 /* @text: 2160p50 */,
+            ScreenResolution_2160p60Hz = 19 /* @text: 2160p60 */,
+            ScreenResolution_4320p30Hz = 20 /* @text: 4320p30 */,
+            ScreenResolution_4320p60Hz = 21 /* @text: 4320p60 */
         };
 
         enum CopyProtection : uint8_t {
-            HDCP_UNAVAILABLE,
-            HDCP_14,
-            HDCP_20,
-            HDCP_21,
-            HDCP_22
+            HDCP_UNAVAILABLE /* @text: unavailable */,
+            HDCP_14 /* @text: 1.4 */,
+            HDCP_20 /* @text: 2.0 */,
+            HDCP_21 /* @text: 2.1 */,
+            HDCP_22 /* @text: 2.2 */
         };
 
         typedef RPC::IIteratorType<VideoOutput, ID_DEVICE_CAPABILITIES_VIDEO_OUTPUT> IVideoOutputIterator;
         typedef RPC::IIteratorType<ScreenResolution, ID_DEVICE_CAPABILITIES_RESOLUTION> IScreenResolutionIterator;
 
+        struct DeviceVideoCapabilitiesData {
         struct VideoOutputCapabilities {
             CopyProtection hdcp /* @brief HDCP support */;
             VideoOutput videoDisplay /* @brief Video Output support */;
             ScreenResolution defaultResolution /* @brief Default resolution */;
         };
 
-        typedef RPC::IIteratorType<VideoOutputCapabilities, ID_DEVICE_CAPABILITIES_VIDEO_CAPABILITIES> IVideoOutputCapabilitiesIterator;
-
-        struct DeviceVideoCapabilitiesData {
+        using IVideoOutputCapabilitiesIterator = RPC::IIteratorType<VideoOutputCapabilities, ID_DEVICE_CAPABILITIES_VIDEO_CAPABILITIES>;
             string hostEdid /* @brief EDID of the host */;
             bool hdr /* @brief Is HDR supported by this device */;
             bool atmos /* @brief Is Atmos supported by this device */;
