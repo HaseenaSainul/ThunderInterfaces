@@ -68,7 +68,20 @@ namespace Exchange {
             ONLY_FROM_MAIN_DOCUMENT_DOMAIN = 2 /* @text:onlyfrommaindocumentdomain */,
             EXCLUSIVELY_FROM_MAIN_DOCUMENT_DOMAIN = 3 /* @text:exclusivelyfrommaindocumentdomain */
         };
-        
+
+        enum StateType : uint8_t {
+            RESUMED = 0 /* @text:resumed */,
+            SUSPENDED = 1 /* @text:suspended */
+        };
+
+        struct HeadersInfo {
+            string name /* @brief Header name */;
+            string value /* @brief Header value */;
+        };
+
+        using IHeadersIterator = RPC::IIteratorType<HeadersInfo, ID_WEB_BROWSER_HEADERS_ITERATOR>;
+        using IStringIterator = RPC::IIteratorType<string, RPC::ID_STRINGITERATOR>;
+
         // @event @uncompliant:extended  // NOTE: extended format is deprecated!! Do not just copy this line!
         struct INotification : virtual public Core::IUnknown {
             enum { ID = ID_WEBKITBROWSER_NOTIFICATION };
@@ -90,8 +103,10 @@ namespace Exchange {
             virtual void VisibilityChange(const bool hidden) = 0;
             // @brief Notifies that the web page requests to close its window
             virtual void PageClosure() = 0;
-            /* @json:omit */
+            // @brief A Base64 encoded JSON message from legacy $badger bridge
             virtual void BridgeQuery(const string& message) = 0;
+            // @brief Signals a state change of the Browser
+            virtual void StateChange(const bool& suspended) = 0;
         };
 
         virtual void Register(INotification* sink) = 0;
@@ -149,6 +164,20 @@ namespace Exchange {
 
         // @brief Initiate garbage collection
         virtual uint32_t CollectGarbage() = 0;
+        // @brief Delete directory
+        uint32_t Delete(const string& path) = 0;
+        // @property
+        // @brief languages: Browser prefered languages
+        uint32_t Languages(IStringIterator*& languages /* @out */) const = 0;
+        uint32_t Languages(IStringIterator* const languages) = 0;
+        // @property
+        // @brief headers: Headers to send on all requests that the browser makes
+        virtual uint32_t Headers(IHeadersIterator*& headers /* @out */) const = 0;
+        virtual uint32_t Headers(IHeadersIterator* const headers) = 0;
+        // @property
+        // @brief state: Running state of the service
+        virtual uint32_t State(StateType& state /* @out */) const = 0;
+        virtual uint32_t State(const StateType state) = 0;
     };
 
     // @json 1.0.0 @uncompliant:extended

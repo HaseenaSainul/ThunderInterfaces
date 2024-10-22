@@ -61,6 +61,7 @@ namespace Exchange {
         ID_BROWSER_SCRIPTING                         = ID_BROWSER + 7,
         ID_BROWSER_COOKIEJAR                         = ID_BROWSER + 8,
         ID_BROWSER_COOKIEJAR_NOTIFICATION            = ID_BROWSER + 9,
+        ID_WEB_BROWSER_HEADERS_ITERATOR              = ID_BROWSER + 0xA,
 
         ID_POWER                                     = RPC::IDS::ID_EXTERNAL_INTERFACE_OFFSET + 0x010,
         ID_POWER_NOTIFICATION                        = ID_POWER + 1,
@@ -93,6 +94,7 @@ namespace Exchange {
 
         ID_CONTENTDECRYPTION                         = RPC::IDS::ID_EXTERNAL_INTERFACE_OFFSET + 0x0A0,
         ID_CONTENTDECRYPTION_NOTIFICATION            = ID_CONTENTDECRYPTION + 1,
+        ID_CONTENTDECRYPTION_DRMS_ITERATOR           = ID_CONTENTDECRYPTION + 2,
 
         ID_PROVISIONING                              = RPC::IDS::ID_EXTERNAL_INTERFACE_OFFSET + 0x0B0,
         ID_PROVISIONING_NOTIFICATION                 = ID_PROVISIONING + 1,
@@ -376,6 +378,11 @@ namespace Exchange {
         ID_TESTAUTOMATIONCOMRPC                      = ID_TESTAUTOMATIONMEMORY + 1,
         ID_TESTAUTOMATIONCOMRPCINTERNAL              = ID_TESTAUTOMATIONMEMORY + 2
 
+        ID_MONITOR                                   = RPC::IDS::ID_EXTERNAL_INTERFACE_OFFSET + 0x500,
+        ID_MONITOR_NOTIFICATION                      = ID_MONITOR + 1,
+        ID_MONITOR_STATISTICS_ITERATOR               = ID_MONITOR + 2,
+
+        ID_SECURITYAGENT                             = RPC::IDS::ID_EXTERNAL_INTERFACE_OFFSET + 0x510
     };
 }
 }

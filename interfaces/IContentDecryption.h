@@ -25,17 +25,35 @@
 namespace Thunder {
 
 namespace Exchange {
-
+    /* @json 1.0.0 */
     // This interface gives direct access to a OpenCDMi server instance, running as a plugin in the framework.
     struct EXTERNAL IContentDecryption : virtual public Core::IUnknown {
         enum { ID = ID_CONTENTDECRYPTION };
-
+        /* @json:omit */
         virtual uint32_t Initialize(PluginHost::IShell* service) = 0;
+        /* @json:omit */
         virtual void Deinitialize(PluginHost::IShell* service) = 0;
+        /* @json:omit */
         virtual uint32_t Reset() = 0;
+        /* @json:omit */
         virtual RPC::IStringIterator* Systems() const = 0;
+        /* @json:omit */
         virtual RPC::IStringIterator* Designators(const string& keySystem) const = 0;
+        /* @json:omit */
         virtual RPC::IStringIterator* Sessions(const string& keySystem) const = 0;
+
+        struct DrmData {
+            string name /* @brief Name of the DRM */;
+            RPC::IStringIterator* keysystems /* @brief Key system identifier list */;
+        };
+        using IDrmIterator = RPC::IIteratorType<DrmData, ID_CONTENTDECRYPTION_DRMS_ITERATOR>;
+
+        // @property
+        // @brief Drms - Retrieves Supported DRM systems
+        virtual uint32_t Drms(IDrmIterator*& drms /* @out */) const = 0;
+        // @property
+        // @brief Keysystems - Retrieves DRM key systems
+        virtual uint32_t KeySystems(const string& index, RPC::IStringIterator*& keys /* @out */) const = 0;
 
         enum Status : uint8_t {
             BUSY,
@@ -49,11 +67,14 @@ namespace Exchange {
             enum {ID = ID_CONTENTDECRYPTION_NOTIFICATION};
 
             /* @brief initialization status. */
+            /* @json:omit */
             virtual void initializationStatus(const std::string& drm,
                                               const Status status) = 0;
         };
 
+        /* @json:omit */
         virtual uint32_t Register(IContentDecryption::INotification* notification VARIABLE_IS_NOT_USED) { return Core::ERROR_NOT_SUPPORTED; };
+        /* @json:omit */
         virtual uint32_t Unregister(IContentDecryption::INotification* notification VARIABLE_IS_NOT_USED) { return Core::ERROR_NOT_SUPPORTED; };
     };
 
