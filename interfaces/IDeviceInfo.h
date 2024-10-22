@@ -29,68 +29,8 @@ namespace Exchange {
     struct EXTERNAL IDeviceInfo : virtual public Core::IUnknown {
         enum { ID = ID_DEVICE_INFO };
 
-        struct FirmwareInfo {
-            enum Yocto : uint8_t {
-              dunfell,
-              morty,
-              daisy,
-              kirkstone
-            };
-
-            string imageName /* @brief Name of firmware image */;
-            string sdk /* @brief SDK version string */;
-            string mediarite /* @brief Mediarite value */;
-            Yocto yocto /* @brief Yocto version */;
-        };
-        struct DeviceData {
-            string deviceType /* @brief Device type */;
-            string friendlyName /* @brief Friendly name */;
-            string distributorId /* @brief Partner ID or distributor ID for device */;
-            string make /* @brief Device manufacturer */;
-            string modelName /* @brief Model Name */;
-            uint16_t modelYear /* @brief Model Year */;
-            string platformName /* @brief Platform name */;
-            string serialNumber /* Device serial number */;
-            string sku /* Device model number or SKU */;
-        };
-        struct SystemData {
-            struct CPULoadAvgs {
-                uint64_t avg1min /* @brief 1min cpuload average */;
-                uint64_t avg5min /* @brief 5min cpuload average */;
-                uint64_t avg15min /* @brief 15min cpuload average */;
-            };
-            string version /* @brief Software version (in form *version#hashtag*) */;
-            uint64_t uptime /* @brief System uptime (in seconds) */;
-            uint64_t totalRAM /* @brief Total installed system RAM memory (in bytes) */;
-            uint64_t freeRAM /* @brief Free system RAM memory (in bytes) */;
-            uint64_t totalSwap /* @brief Total swap space (in bytes) */;
-            uint64_t freeSwap /* @brief Swap space still available (in bytes) */;
-            string deviceName /* @brief Host name */;
-            string cpuLoad /* @brief Current CPU load (percentage) */;
-            CPULoadAvgs cpuLoadAvg /* @brief CPU load average */;
-            string serialNumber /* @brief Device serial number */;
-            string time /* @brief Current system date and time */;
-        };
-        struct SocketData {
-            uint32_t total /* @brief Number of total */;
-            uint32_t open /* @brief Number of open */;
-            uint32_t link /* @brief Number of link */;
-            uint32_t exception /* @brief Number of exception */;
-            uint32_t shutdown /* @brief Number of shutdown */;
-            uint32_t runs /* @brief Number of runs */;
-        };
-        using IStringIterator = RPC::IIteratorType<string, RPC::ID_STRINGITERATOR>;
-        struct AddressData {
-            string Name /* @brief Interface name */;
-            string Mac /* @brief Interface MAC address */;
-            IStringIterator* Ip /* @brief An array of Interface IP address */;
-        };
-
         /* @json:omit */
         virtual uint32_t Configure(const PluginHost::IShell* service) = 0;
-        // @property
-        // @brief Retrieves Firware Information
-        virtual uint32_t FirmwareVersion(FirmwareInfo& value /* @out */) const = 0;
         // @property
         // @brief Retrieves Serial Number
         virtual uint32_t SerialNumber(string& value /* @out */) const = 0;
@@ -119,18 +59,6 @@ namespace Exchange {
         // @property
         // @brief Retrieves Distributor Id
         virtual uint32_t DistributorId(string& value /* @out */) const = 0;
-        // @property
-        // @brief Retrieves DeviceInfo
-        virtual uint32_t DeviceInfo(DeviceData& value /* @out */) const = 0;
-        // @property
-        // @brief Retrieves SystemInfo
-        virtual uint32_t SystemInfo(SystemData& value /* @out */) const = 0;
-        // @property
-        // @brief Retrieves SocketInfo
-        virtual uint32_t SocketInfo(SocketData& value /* @out */) const = 0;
-        // @property
-        // @brief Retrieves Addresses
-        virtual uint32_t Addresses(AddressData& value /* @out */) const = 0;
     };
 
     /* @json 1.0.0 */
@@ -178,21 +106,6 @@ namespace Exchange {
         typedef RPC::IIteratorType<MS12Capability, ID_DEVICE_CAPABILITIES_AUDIO_MS12_CAPABILITY> IMS12CapabilityIterator;
         typedef RPC::IIteratorType<MS12Profile, ID_DEVICE_CAPABILITIES_AUDIO_MS12_PROFILE> IMS12ProfileIterator;
 
-        struct IAudioCapabilities : virtual struct IUnknown {
-            // @property
-            // @brief Audio Output support
-            virtual uint32_t Port(AudioOutput& audioOutput /* @out */) const = 0;
-            // @property
-            // @brief Retrieves AudioCapabilities
-            virtual uint32_t Audio(IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
-            // @property
-            // @brief Retrieves MS12 Capabilities
-            virtual uint32_t MS12(IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
-            // @property
-            // @brief Retrieves MS12 Audio Profiles
-            virtual uint32_t MS12Profiles(IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
-        };
-
         // @alt supportedaudioports
         // @property
         // @brief Retrieves AudioOutputs
@@ -205,8 +118,6 @@ namespace Exchange {
         // @alt supportedms12audioprofiles
         // @brief Retrieves MS12 Audio Profiles
         virtual uint32_t MS12AudioProfiles(const AudioOutput audioOutput /* @index */, IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
-        // @brief Retrieves DeviceAudioCapabilities
-        virtual IAudioCapabilities* DeviceAudioCapabilities(const AudioOutput audioOutput) = 0;
     };
 
     /* @json 1.0.0 */
@@ -263,38 +174,6 @@ namespace Exchange {
         typedef RPC::IIteratorType<VideoOutput, ID_DEVICE_CAPABILITIES_VIDEO_OUTPUT> IVideoOutputIterator;
         typedef RPC::IIteratorType<ScreenResolution, ID_DEVICE_CAPABILITIES_RESOLUTION> IScreenResolutionIterator;
 
-        struct IVideoCapabilities {
-            struct IVideoOutputCapabilities {
-                // @property
-                // @brief Video Output support
-                virtual uint32_t Display(VideoOutput& videoOutput /* @out */) const = 0;
-                // @property
-                // @brief HDCP support
-                virtual uint32_t HDCP(CopyProtection& hdcp /* @out */) const = 0;
-                // @property
-                // @brief  Supported resolutions
-                virtual uint32_t Resolutions(IScreenResolutionIterator& screenResolution /* @out */) const = 0;
-                // @property
-                // @brief Default resolution
-                virtual uint32_t DefaultResolution(ScreenResolution& screenResolution /* @out */) const = 0;
-            };
-
-            // @property
-            // @brief EDID of the host
-            virtual uint32_t HostEdid(string& edid /* @out */) const = 0;
-            // @property
-            // @brief Is HDR supported by this device
-            virtual uint32_t HDR(bool& hdr /* @out */) const = 0;
-            // @property
-            // @brief Is Atmos supported by this device
-            virtual uint32_t Atmos(bool& atoms) const = 0;
-            // @property
-            // @brief Is CEC supported by this device
-            virtual uint32_t CEC(bool& cec) const = 0;
-            // @property
-            // @brief An array of VideoOutputCapabilities
-            virtual uint32_t VideoCapabilities(const VideoOutput videoOutput /* @index */, IVideoOutputCapabilities*& videoCapabilities /* @out */) const = 0;
-        };
 
         // @alt supportedvideodisplays
         // @property
@@ -319,8 +198,142 @@ namespace Exchange {
         // @property
         // @brief Retrieves cec
         virtual uint32_t CEC(bool& supportsCEC /*@out*/) const = 0;
-        // @brief Retrieves DeviceVideoCapabilities
-        virtual IVideoCapabilities* DeviceVideoCapabilities() = 0;
     };
+
+    namespace JSONRPC {
+        // @json 1.0.0
+        struct EXTERNAL DeviceCapabilities {
+            struct FirmwareInfo {
+                enum Yocto : uint8_t {
+                    dunfell,
+                    morty,
+                    daisy,
+                    kirkstone
+                };
+
+                string imageName /* @brief Name of firmware image */;
+                string sdk /* @brief SDK version string */;
+                string mediarite /* @brief Mediarite value */;
+                Yocto yocto /* @brief Yocto version */;
+            };
+            struct DeviceData {
+                string deviceType /* @brief Device type */;
+                string friendlyName /* @brief Friendly name */;
+                string distributorId /* @brief Partner ID or distributor ID for device */;
+                string make /* @brief Device manufacturer */;
+                string modelName /* @brief Model Name */;
+                uint16_t modelYear /* @brief Model Year */;
+                string platformName /* @brief Platform name */;
+                string serialNumber /* Device serial number */;
+                string sku /* Device model number or SKU */;
+            };
+            struct SystemData {
+                struct CPULoadAvgs {
+                    uint64_t avg1min /* @brief 1min cpuload average */;
+                    uint64_t avg5min /* @brief 5min cpuload average */;
+                    uint64_t avg15min /* @brief 15min cpuload average */;
+                };
+                string version /* @brief Software version (in form *version#hashtag*) */;
+                uint64_t uptime /* @brief System uptime (in seconds) */;
+                uint64_t totalRAM /* @brief Total installed system RAM memory (in bytes) */;
+                uint64_t freeRAM /* @brief Free system RAM memory (in bytes) */;
+                uint64_t totalSwap /* @brief Total swap space (in bytes) */;
+                uint64_t freeSwap /* @brief Swap space still available (in bytes) */;
+                string deviceName /* @brief Host name */;
+                string cpuLoad /* @brief Current CPU load (percentage) */;
+                CPULoadAvgs cpuLoadAvg /* @brief CPU load average */;
+                string serialNumber /* @brief Device serial number */;
+                string time /* @brief Current system date and time */;
+            };
+            struct SocketData {
+                uint32_t total /* @brief Number of total */;
+                uint32_t open /* @brief Number of open */;
+                uint32_t link /* @brief Number of link */;
+                uint32_t exception /* @brief Number of exception */;
+                uint32_t shutdown /* @brief Number of shutdown */;
+                uint32_t runs /* @brief Number of runs */;
+            };
+            using IStringIterator = RPC::IIteratorType<string, RPC::ID_STRINGITERATOR>;
+            struct IAddresses : virtual struct IUnknown {
+                // @brief Interface name
+                virtual uint32_t Name(string& name /* @out */) const = 0;
+                // @brief Interface MAC address
+                virtual uint32_t Mac(string& mac /* @out */) const = 0;
+                // @brief An array of Interface IP address
+                virtual uint32_t Ip(IStringIterator*& ip /* @out */) const = 0;
+            };
+
+            // @property
+            // @brief Retrieves Firware Information
+            virtual uint32_t FirmwareVersion(FirmwareInfo& value /* @out */) const = 0;
+            // @property
+            // @brief Retrieves DeviceInfo
+            virtual uint32_t DeviceInfo(DeviceData& value /* @out */) const = 0;
+            // @property
+            // @brief Retrieves SystemInfo
+            virtual uint32_t SystemInfo(SystemData& value /* @out */) const = 0;
+            // @property
+            // @brief Retrieves SocketInfo
+            virtual uint32_t SocketInfo(SocketData& value /* @out */) const = 0;
+            // @lookup:Addresses
+            // @brief Retrieves Addresses
+            virtual IAddresses* Addresses() = 0;
+
+            struct IAudioCapabilities : virtual struct IUnknown {
+                // @property
+                // @brief Audio Output support
+                virtual uint32_t Port(IDeviceAudioCapabilities::AudioOutput& audioOutput /* @out */) const = 0;
+                // @property
+                // @brief Retrieves AudioCapabilities
+                virtual uint32_t Audio(IDeviceAudioCapabilities::IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
+                // @property
+                // @brief Retrieves MS12 Capabilities
+                virtual uint32_t MS12(IDeviceAudioCapabilities::IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
+                // @property
+                // @brief Retrieves MS12 Audio Profiles
+                virtual uint32_t MS12Profiles(IDeviceAudioCapabilities::IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
+            };
+            // @lookup:DeviceAudioCapabilities
+            // @brief Retrieves DeviceAudioCapabilities
+            virtual IAudioCapabilities* DeviceAudioCapabilities(const IDeviceAudioCapabilities::AudioOutput audioOutput) = 0;
+
+            struct IVideoCapabilities {
+                struct IVideoOutputCapabilities {
+                    // @property
+                    // @brief Video Output support
+                    virtual uint32_t Display(IDeviceVideoCapabilities::VideoOutput& videoOutput /* @out */) const = 0;
+                    // @property
+                    // @brief HDCP support
+                    virtual uint32_t HDCP(IDeviceVideoCapabilities::CopyProtection& hdcp /* @out */) const = 0;
+                    // @property
+                    // @brief  Supported resolutions
+                    virtual uint32_t Resolutions(IDeviceVideoCapabilities::IScreenResolutionIterator& screenResolution /* @out */) const = 0;
+                    // @property
+                    // @brief Default resolution
+                    virtual uint32_t DefaultResolution(IDeviceVideoCapabilities::ScreenResolution& screenResolution /* @out */) const = 0;
+                };
+
+                // @property
+                // @brief EDID of the host
+                virtual uint32_t HostEdid(string& edid /* @out */) const = 0;
+                // @property
+                // @brief Is HDR supported by this device
+                virtual uint32_t HDR(bool& hdr /* @out */) const = 0;
+                // @property
+                // @brief Is Atmos supported by this device
+                virtual uint32_t Atmos(bool& atoms) const = 0;
+                // @property
+                // @brief Is CEC supported by this device
+                virtual uint32_t CEC(bool& cec) const = 0;
+                // @lookup:VideoCapabilities
+                // @brief An array of VideoOutputCapabilities
+                virtual IVideoOutputCapabilities* VideoCapabilities(const IDeviceVideoCapabilities::VideoOutput videoOutput) = 0;
+            };
+
+            // @lookup:DeviceVideoCapabilities
+            // @brief Retrieves DeviceVideoCapabilities
+            virtual IVideoCapabilities* DeviceVideoCapabilities() = 0;
+        };
+    } // namespace JSONRPC
 }
 }
