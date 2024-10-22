@@ -178,16 +178,19 @@ namespace Exchange {
         typedef RPC::IIteratorType<MS12Capability, ID_DEVICE_CAPABILITIES_AUDIO_MS12_CAPABILITY> IMS12CapabilityIterator;
         typedef RPC::IIteratorType<MS12Profile, ID_DEVICE_CAPABILITIES_AUDIO_MS12_PROFILE> IMS12ProfileIterator;
 
-        struct DeviceAudioCapabilitiesData {
-            struct AudioOutputCapabilities {
-                AudioOutput audioPort /* @brief Audio Output support */;
-                IAudioCapabilityIterator* audiocapabilities /* @brief Audio capabilities for the specified audio port */;
-                IMS12CapabilityIterator* ms12capabilities /* @brief Audio ms12 capabilities for the specified audio port */;
-                IMS12ProfileIterator* ms12profiles /* @brief Audio ms12 profiles for the specified audio port */;
-            };
-
-            using IAudioOutputCapabilitiesIterator = RPC::IIteratorType<AudioOutputCapabilities, ID_DEVICE_CAPABILITIES_AUDIO_CAPABILITIES>;
-            IAudioOutputCapabilitiesIterator* audioOutputCapabilities /* @brief An array of AudioOutputCapabilities */;
+        struct IAudioCapabilities : virtual struct IUnknown {
+            // @property
+            // @brief Audio Output support
+            virtual uint32_t Port(AudioOutput& audioOutput /* @out */) const = 0;
+            // @property
+            // @brief Retrieves AudioCapabilities
+            virtual uint32_t Audio(IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
+            // @property
+            // @brief Retrieves MS12 Capabilities
+            virtual uint32_t MS12(IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
+            // @property
+            // @brief Retrieves MS12 Audio Profiles
+            virtual uint32_t MS12Profiles(IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
         };
 
         // @alt supportedaudioports
@@ -195,15 +198,15 @@ namespace Exchange {
         // @brief Retrieves AudioOutputs
         virtual uint32_t AudioOutputs(IAudioOutputIterator*& audioOutputs /* @out */) const = 0;
         // @property
-        // @brief Retrieves DeviceAudioCapabilities
-        virtual uint32_t DeviceAudioCapabilities(DeviceAudioCapabilitiesData& audioCapabilities /* @out */) const = 0;
         // @brief Retrieves AudioCapabilities
-        virtual uint32_t AudioCapabilities(const AudioOutput audioOutput /* @in */, IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
+        virtual uint32_t AudioCapabilities(const AudioOutput audioOutput /* @index */, IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
         // @brief Retrieves MS12 Capabilities
-        virtual uint32_t MS12Capabilities(const AudioOutput audioOutput /* @in */, IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
+        virtual uint32_t MS12Capabilities(const AudioOutput audioOutput /* @index */, IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
         // @alt supportedms12audioprofiles
         // @brief Retrieves MS12 Audio Profiles
-        virtual uint32_t MS12AudioProfiles(const AudioOutput audioOutput /* @in */, IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
+        virtual uint32_t MS12AudioProfiles(const AudioOutput audioOutput /* @index */, IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
+        // @brief Retrieves DeviceAudioCapabilities
+        virtual IAudioCapabilities* DeviceAudioCapabilities(const AudioOutput audioOutput) = 0;
     };
 
     /* @json 1.0.0 */
@@ -260,37 +263,51 @@ namespace Exchange {
         typedef RPC::IIteratorType<VideoOutput, ID_DEVICE_CAPABILITIES_VIDEO_OUTPUT> IVideoOutputIterator;
         typedef RPC::IIteratorType<ScreenResolution, ID_DEVICE_CAPABILITIES_RESOLUTION> IScreenResolutionIterator;
 
-        struct DeviceVideoCapabilitiesData {
-            struct VideoOutputCapabilities {
-                CopyProtection hdcp /* @brief HDCP support */;
-                VideoOutput videoDisplay /* @brief Video Output support */;
-                IScreenResolutionIterator* resolutions /* @brief  Supported resolutions */;
-                ScreenResolution defaultResolution /* @brief Default resolution */;
+        struct IVideoCapabilities {
+            struct IVideoOutputCapabilities {
+                // @property
+                // @brief Video Output support
+                virtual uint32_t Display(VideoOutput& videoOutput /* @out */) const = 0;
+                // @property
+                // @brief HDCP support
+                virtual uint32_t HDCP(CopyProtection& hdcp /* @out */) const = 0;
+                // @property
+                // @brief  Supported resolutions
+                virtual uint32_t Resolutions(IScreenResolutionIterator& screenResolution /* @out */) const = 0;
+                // @property
+                // @brief Default resolution
+                virtual uint32_t DefaultResolution(ScreenResolution& screenResolution /* @out */) const = 0;
             };
 
-            using IVideoOutputCapabilitiesIterator = RPC::IIteratorType<VideoOutputCapabilities, ID_DEVICE_CAPABILITIES_VIDEO_CAPABILITIES>;
-            string hostEdid /* @brief EDID of the host */;
-            bool hdr /* @brief Is HDR supported by this device */;
-            bool atmos /* @brief Is Atmos supported by this device */;
-            bool cec /* @brief Is CEC supported by this device */;
-            IVideoOutputCapabilitiesIterator* videoOutputCapabilities /* @brief An array of VideoOutputCapabilities */;
+            // @property
+            // @brief EDID of the host
+            virtual uint32_t HostEdid(string& edid /* @out */) const = 0;
+            // @property
+            // @brief Is HDR supported by this device
+            virtual uint32_t HDR(bool& hdr /* @out */) const = 0;
+            // @property
+            // @brief Is Atmos supported by this device
+            virtual uint32_t Atmos(bool& atoms) const = 0;
+            // @property
+            // @brief Is CEC supported by this device
+            virtual uint32_t CEC(bool& cec) const = 0;
+            // @property
+            // @brief An array of VideoOutputCapabilities
+            virtual uint32_t VideoCapabilities(const VideoOutput videoOutput /* @index */, IVideoOutputCapabilities*& videoCapabilities /* @out */) const = 0;
         };
 
         // @alt supportedvideodisplays
         // @property
         // @brief Retrieves VideoOutputs
         virtual uint32_t VideoOutputs(IVideoOutputIterator*& videoOutputs /* @out */) const = 0;
-        // @property
-        // @brief Retrieves DeviceVideoCapabilities
-        virtual uint32_t DeviceVideoCapabilities(DeviceVideoCapabilitiesData& videoCapabilities /* @out */) const = 0;
         // @brief Retrieves DefaultResolution against given video Output
-        virtual uint32_t DefaultResolution(const VideoOutput videoOutput /* @in */, ScreenResolution& defaultResolution /* @out */) const = 0;
+        virtual uint32_t DefaultResolution(const VideoOutput videoOutput /* @index */, ScreenResolution& defaultResolution /* @out */) const = 0;
         // @alt supportedresolutions
         // @brief Retrieves Resolution against given video Output
-        virtual uint32_t Resolutions(const VideoOutput videoOutput /* @in */, IScreenResolutionIterator*& resolutions /* @out */) const = 0;
+        virtual uint32_t Resolutions(const VideoOutput videoOutput /* @index */, IScreenResolutionIterator*& resolutions /* @out */) const = 0;
         // @alt supportedhdcp
         // @brief Retrieves Hdcp
-        virtual uint32_t Hdcp(const VideoOutput videoOutput /* @in */, CopyProtection& hdcpVersion /* @out */) const = 0;
+        virtual uint32_t Hdcp(const VideoOutput videoOutput /* @index */, CopyProtection& hdcpVersion /* @out */) const = 0;
         // @property
         // @brief Retrieves Host EDID
         virtual uint32_t HostEDID(string& edid /* @out */) const = 0;
@@ -302,6 +319,8 @@ namespace Exchange {
         // @property
         // @brief Retrieves cec
         virtual uint32_t CEC(bool& supportsCEC /*@out*/) const = 0;
+        // @brief Retrieves DeviceVideoCapabilities
+        virtual IVideoCapabilities* DeviceVideoCapabilities() = 0;
     };
 }
 }
