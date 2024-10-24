@@ -68,56 +68,51 @@ namespace Exchange {
         virtual ~IDeviceAudioCapabilities() override = default;
 
         enum AudioOutput : uint8_t {
-            AUDIO_OTHER /* @text: OTHER */,
-            AUDIO_RF_MODULATOR /* @text: RF_MODULATOR */,
-            AUDIO_ANALOG /* @text: ANALOG */,
-            AUDIO_SPDIF /* @text: SPDIF0 */, //over RCA or TOSLINK
-            AUDIO_HDMI0 /* @text: HDMI0 */,
-            AUDIO_HDMI1 /* @text: HDMI1 */,
-            AUDIO_DISPLAYPORT /* @text: DISPLAYPORT */
+            AUDIO_OTHER = 0x00 /* @text: OTHER */,
+            AUDIO_RF_MODULATOR = 0x01 /* @text: RF_MODULATOR */,
+            AUDIO_ANALOG = 0x02 /* @text: ANALOG */,
+            AUDIO_SPDIF = 0x04 /* @text: SPDIF0 */, //over RCA or TOSLINK
+            AUDIO_HDMI0 = 0x08 /* @text: HDMI0 */,
+            AUDIO_HDMI1 = 0x10 /* @text: HDMI1 */,
+            AUDIO_DISPLAYPORT = 0x20 /* @text: DISPLAYPORT */
         };
 
         enum AudioCapability : uint8_t {
-            AUDIOCAPABILITY_NONE /* @text: audiocapability_none */,
-            ATMOS /* @text: atmos */,
-            DD /* @text: dd */,
-            DDPLUS /* @text: ddplus */,
-            DAD /* @text: dad */,
-            DAPV2 /* @text: dapv2 */,
-            MS12 /* @text: ms12 */
+            AUDIOCAPABILITY_NONE = 0x00 /* @text: audiocapability_none */,
+            ATMOS = 0x01 /* @text: atmos */,
+            DD = 0x02 /* @text: dd */,
+            DDPLUS = 0x04 /* @text: ddplus */,
+            DAD = 0x08 /* @text: dad */,
+            DAPV2 = 0x10 /* @text: dapv2 */,
+            MS12 = 0x20 /* @text: ms12 */
         };
 
         enum MS12Capability : uint8_t {
-            MS12CAPABILITY_NONE /* @text: ms12capability_none */,
-            DOLBYVOLUME /* @text: dolbyvolume */,
-            INTELIGENTEQUALIZER /* @text: inteligentequalizer */,
-            DIALOGUEENHANCER /* @text: dialogueenhancer */
+            MS12CAPABILITY_NONE = 0x00 /* @text: ms12capability_none */,
+            DOLBYVOLUME = 0x01 /* @text: dolbyvolume */,
+            INTELIGENTEQUALIZER = 0x02 /* @text: inteligentequalizer */,
+            DIALOGUEENHANCER = 0x04 /* @text: dialogueenhancer */
         };
 
         enum MS12Profile : uint8_t {
-            MS12PROFILE_NONE /* @text: ms12profile_none */,
-            MUSIC /* @text: music */,
-            MOVIE /* @text: movie */,
-            VOICE /* @text: voice */
+            MS12PROFILE_NONE = 0x00 /* @text: ms12profile_none */,
+            MUSIC = 0x01 /* @text: music */,
+            MOVIE = 0x02 /* @text: movie */,
+            VOICE = 0x04 /* @text: voice */
         };
-
-        typedef RPC::IIteratorType<AudioOutput, ID_DEVICE_CAPABILITIES_AUDIO_OUTPUT> IAudioOutputIterator;
-        typedef RPC::IIteratorType<AudioCapability, ID_DEVICE_CAPABILITIES_AUDIO_CAPABILITY> IAudioCapabilityIterator;
-        typedef RPC::IIteratorType<MS12Capability, ID_DEVICE_CAPABILITIES_AUDIO_MS12_CAPABILITY> IMS12CapabilityIterator;
-        typedef RPC::IIteratorType<MS12Profile, ID_DEVICE_CAPABILITIES_AUDIO_MS12_PROFILE> IMS12ProfileIterator;
 
         // @alt supportedaudioports
         // @property
         // @brief Retrieves AudioOutputs
-        virtual Core::hresult AudioOutputs(IAudioOutputIterator*& audioOutputs /* @out */) const = 0;
+        virtual Core::hresult AudioOutputs(AudioOutput& audioOutputs /* @out @bitmask */) const = 0;
         // @property
         // @brief Retrieves AudioCapabilities
-        virtual Core::hresult AudioCapabilities(const AudioOutput audioOutput /* @index */, IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
+        virtual Core::hresult AudioCapabilities(const AudioOutput audioOutput /* @index */, AudioCapability& audioCapabilities /* @out @bitmask */) const = 0;
         // @brief Retrieves MS12 Capabilities
-        virtual Core::hresult MS12Capabilities(const AudioOutput audioOutput /* @index */, IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
+        virtual Core::hresult MS12Capabilities(const AudioOutput audioOutput /* @index */, MS12Capability& ms12Capabilities /* @out @bitmask */) const = 0;
         // @alt supportedms12audioprofiles
         // @brief Retrieves MS12 Audio Profiles
-        virtual Core::hresult MS12AudioProfiles(const AudioOutput audioOutput /* @index */, IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
+        virtual Core::hresult MS12AudioProfiles(const AudioOutput audioOutput /* @index */, MS12Profile& ms12Profiles /* @out @bitmask */) const = 0;
     };
 
     /* @json 1.0.0 */
@@ -127,15 +122,15 @@ namespace Exchange {
         virtual ~IDeviceVideoCapabilities() override = default;
 
         enum VideoOutput : uint8_t {
-            VIDEO_OTHER /* @text: OTHER */,
-            VIDEO_RF_MODULATOR /* @text: RF_MODULATOR */,
-            VIDEO_COMPOSITE /* @text: COMPOSITE */, // also composite over SCART
-            VIDEO_SVIDEO /* @text: SVIDEO */,
-            VIDEO_COMPONENT /* @text: COMPONENT */,
-            VIDEO_SCART_RGB /* @text: SCART_RGB */,
-            VIDEO_HDMI0 /* @text: HDMI0 */,
-            VIDEO_HDMI1 /* @text:  HDMI1*/,
-            VIDEO_DISPLAYPORT /* @text: DISPLAYPORT */ // also DisplayPort over USB-C
+            VIDEO_OTHER = 0x00 /* @text: OTHER */,
+            VIDEO_RF_MODULATOR = 0x01 /* @text: RF_MODULATOR */,
+            VIDEO_COMPOSITE = 0x02 /* @text: COMPOSITE */, // also composite over SCART
+            VIDEO_SVIDEO = 0x04 /* @text: SVIDEO */,
+            VIDEO_COMPONENT = 0x08 /* @text: COMPONENT */,
+            VIDEO_SCART_RGB = 0x10 /* @text: SCART_RGB */,
+            VIDEO_HDMI0 = 0x20 /* @text: HDMI0 */,
+            VIDEO_HDMI1 = 0x40 /* @text:  HDMI1*/,
+            VIDEO_DISPLAYPORT = 0x80 /* @text: DISPLAYPORT */ // also DisplayPort over USB-C
         };
 
         enum ScreenResolution : uint32_t {
@@ -171,19 +166,16 @@ namespace Exchange {
             HDCP_22 /* @text: 2.2 */
         };
 
-        typedef RPC::IIteratorType<VideoOutput, ID_DEVICE_CAPABILITIES_VIDEO_OUTPUT> IVideoOutputIterator;
-        typedef RPC::IIteratorType<ScreenResolution, ID_DEVICE_CAPABILITIES_RESOLUTION> IScreenResolutionIterator;
-
 
         // @alt supportedvideodisplays
         // @property
         // @brief Retrieves VideoOutputs
-        virtual Core::hresult VideoOutputs(IVideoOutputIterator*& videoOutputs /* @out */) const = 0;
+        virtual Core::hresult VideoOutputs(VideoOutput& videoOutputs /* @out @bitmask */) const = 0;
         // @brief Retrieves DefaultResolution against given video Output
         virtual Core::hresult DefaultResolution(const VideoOutput videoOutput /* @index */, ScreenResolution& defaultResolution /* @out */) const = 0;
         // @alt supportedresolutions
         // @brief Retrieves Resolution against given video Output
-        virtual Core::hresult Resolutions(const VideoOutput videoOutput /* @index */, IScreenResolutionIterator*& resolutions /* @out */) const = 0;
+        virtual Core::hresult Resolutions(const VideoOutput videoOutput /* @index */, ScreenResolution& resolutions /* @out @bitmask */) const = 0;
         // @alt supportedhdcp
         // @brief Retrieves Hdcp
         virtual Core::hresult Hdcp(const VideoOutput videoOutput /* @index */, CopyProtection& hdcpVersion /* @out */) const = 0;
@@ -255,15 +247,6 @@ namespace Exchange {
                 uint32_t shutdown /* @brief Number of shutdown */;
                 uint32_t runs /* @brief Number of runs */;
             };
-            using IStringIterator = RPC::IIteratorType<string, RPC::ID_STRINGITERATOR>;
-            struct IAddresses : virtual public Core::IUnknown {
-                // @brief Interface name
-                virtual Core::hresult Name(string& name /* @out */) const = 0;
-                // @brief Interface MAC address
-                virtual Core::hresult Mac(string& mac /* @out */) const = 0;
-                // @brief An array of Interface IP address
-                virtual Core::hresult Ip(IStringIterator*& ip /* @out */) const = 0;
-            };
 
             // @property
             // @brief Retrieves Firware Information
@@ -277,27 +260,28 @@ namespace Exchange {
             // @property
             // @brief Retrieves SocketInfo
             virtual Core::hresult SocketInfo(SocketData& value /* @out */) const = 0;
-            // @lookup:Addresses
-            // @brief Retrieves Addresses
-            virtual IAddresses* Addresses(const uint32_t id) = 0;
 
-            struct IAudioCapabilities : virtual public Core::IUnknown {
-                // @property
-                // @brief Audio Output support
-                virtual Core::hresult Port(IDeviceAudioCapabilities::AudioOutput& audioOutput /* @out */) const = 0;
-                // @property
-                // @brief Retrieves AudioCapabilities
-                virtual Core::hresult Audio(IDeviceAudioCapabilities::IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
-                // @property
-                // @brief Retrieves MS12 Capabilities
-                virtual Core::hresult MS12(IDeviceAudioCapabilities::IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
-                // @property
-                // @brief Retrieves MS12 Audio Profiles
-                virtual Core::hresult MS12Profiles(IDeviceAudioCapabilities::IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
+            struct Address {
+                string name /* @brief Interface name */;
+                string mac /* @brief Interface MAC address */;
+                string /* @opaque */ ip /* @brief An array of Interface IP address */;
             };
-            // @lookup:DeviceAudioCapabilities
+            using IAddressIterator = RPC::IIteratorType<Address, ID_DEVICE_INFO_ADDRESSES>;
+
+            // @brief Retrieves Addresses
+            // @param addresses: An array of Interface address
+            virtual uint32_t Addresses(IAddressIterator*& ip /* @out */) const = 0;
+
+            struct AudioOutputCaps {
+                IDeviceAudioCapabilities::AudioOutput audioOutput /* @brief Audio Output support */;
+                IDeviceAudioCapabilities::AudioCapability audioCapabilities /* @bitmask @brief Retrieves AudioCapabilities */;
+                IDeviceAudioCapabilities::MS12Capability ms12Capabilities /* @bitmask @brief Retrieves MS12 Capabilities */;
+                IDeviceAudioCapabilities::MS12Profile ms12Profiles /* @bitmask @brief Retrieves MS12 Audio Profiles */;
+            };
+
+            using IAudioOutputCapsIterator = RPC::IIteratorType<AudioOutputCaps, ID_DEVICE_CAPABILITIES_AUDIO_OUTPUT>;
             // @brief Retrieves DeviceAudioCapabilities
-            virtual IAudioCapabilities* DeviceAudioCapabilities(const IDeviceAudioCapabilities::AudioOutput audioOutput /* @index */) = 0;
+            virtual Core::hresult DeviceAudioCapabilities(IAudioOutputCapsIterator*& audioOutputCaps /* @out */) const = 0;
 
             struct VideoOutputCaps {
                 IDeviceVideoCapabilities::VideoOutput videoOutput /* @brief Video Output support */;
@@ -306,11 +290,11 @@ namespace Exchange {
                 IDeviceVideoCapabilities::ScreenResolution defaultResolution /* @brief Default resolution */;
             };
 
-            using IVideoOutputCapsIterator = RPC::IIteratorType<VideoOutputCaps, ID_DEVICE_CAPABILITIES_VIDEO_CAPABILITIES>;
+            using IVideoOutputCapsIterator = RPC::IIteratorType<VideoOutputCaps, ID_DEVICE_CAPABILITIES_VIDEO_OUTPUT>;
             // @brief Retrieves DeviceVideoCapabilities
             virtual Core::hresult DeviceVideoCapabilities(string& edid /* @out */,
                     bool& hdr /* @out */, bool& cec /* @out */,
-                    IVideoOutputCapsIterator*& videoOutputCapabilities /* @out */) const = 0;
+                    IVideoOutputCapsIterator*& videoOutputCaps /* @out */) const = 0;
 
         };
     } // namespace JSONRPC
