@@ -37,7 +37,7 @@ namespace Exchange {
         struct Measurements {
             Measurement resident /* @brief Resident memory measurement */;
             Measurement allocated /* @brief Allocated memory measurement */;
-            Measurement shared /* @brief Shared memory measurement */
+            Measurement shared /* @brief Shared memory measurement */;
             Measurement process /* @brief Processes measurement */;
             bool operational /* @brief Whether the service is up and running */;
             uint32_t count /* @brief Number of measurements */;
@@ -74,7 +74,7 @@ namespace Exchange {
         // @property
         // @brief Status: The memory and process statistics either for a single plugin or
         // all plugins watched by the Monitor
-        virtual uint32_t Status(const string& index, IStatisticsIterator*& statistics /* @out */) const = 0;
+        virtual uint32_t Status(const string& index /* @index */, IStatisticsIterator*& statistics /* @out */) const = 0;
     };
 }
 }

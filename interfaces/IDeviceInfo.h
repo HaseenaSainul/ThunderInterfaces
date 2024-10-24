@@ -30,35 +30,35 @@ namespace Exchange {
         enum { ID = ID_DEVICE_INFO };
 
         /* @json:omit */
-        virtual uint32_t Configure(const PluginHost::IShell* service) = 0;
+        virtual Core::hresult Configure(const PluginHost::IShell* service) = 0;
         // @property
         // @brief Retrieves Serial Number
-        virtual uint32_t SerialNumber(string& value /* @out */) const = 0;
+        virtual Core::hresult SerialNumber(string& value /* @out */) const = 0;
         // @alt modelid
         // @property
         // @brief Retrieves ModelID/Sku
-        virtual uint32_t Sku(string& value /* @out */) const = 0;
+        virtual Core::hresult Sku(string& value /* @out */) const = 0;
         // @property
         // @brief Retrieves Make
-        virtual uint32_t Make(string& value /* @out */) const = 0;
+        virtual Core::hresult Make(string& value /* @out */) const = 0;
         // @property
         // @brief Retrieves Model Name
-        virtual uint32_t ModelName(string& value/*@out*/) const = 0;
+        virtual Core::hresult ModelName(string& value/*@out*/) const = 0;
         // @property
         // @brief Retrieves Model Year
-        virtual uint32_t ModelYear(uint16_t& value/*@out*/) const = 0;
+        virtual Core::hresult ModelYear(uint16_t& value/*@out*/) const = 0;
         // @property
         // @brief Retrieves Friendly Name
-        virtual uint32_t FriendlyName(string& value/*@out*/) const = 0;
+        virtual Core::hresult FriendlyName(string& value/*@out*/) const = 0;
         // @property
         // @brief Retrieves Device Type
-        virtual uint32_t DeviceType(string& value /* @out */) const = 0;
+        virtual Core::hresult DeviceType(string& value /* @out */) const = 0;
         // @property
         // @brief Retrieves Platform Name
-        virtual uint32_t PlatformName(string& value/*@out*/) const = 0;
+        virtual Core::hresult PlatformName(string& value/*@out*/) const = 0;
         // @property
         // @brief Retrieves Distributor Id
-        virtual uint32_t DistributorId(string& value /* @out */) const = 0;
+        virtual Core::hresult DistributorId(string& value /* @out */) const = 0;
     };
 
     /* @json 1.0.0 */
@@ -109,15 +109,15 @@ namespace Exchange {
         // @alt supportedaudioports
         // @property
         // @brief Retrieves AudioOutputs
-        virtual uint32_t AudioOutputs(IAudioOutputIterator*& audioOutputs /* @out */) const = 0;
+        virtual Core::hresult AudioOutputs(IAudioOutputIterator*& audioOutputs /* @out */) const = 0;
         // @property
         // @brief Retrieves AudioCapabilities
-        virtual uint32_t AudioCapabilities(const AudioOutput audioOutput /* @index */, IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
+        virtual Core::hresult AudioCapabilities(const AudioOutput audioOutput /* @index */, IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
         // @brief Retrieves MS12 Capabilities
-        virtual uint32_t MS12Capabilities(const AudioOutput audioOutput /* @index */, IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
+        virtual Core::hresult MS12Capabilities(const AudioOutput audioOutput /* @index */, IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
         // @alt supportedms12audioprofiles
         // @brief Retrieves MS12 Audio Profiles
-        virtual uint32_t MS12AudioProfiles(const AudioOutput audioOutput /* @index */, IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
+        virtual Core::hresult MS12AudioProfiles(const AudioOutput audioOutput /* @index */, IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
     };
 
     /* @json 1.0.0 */
@@ -138,29 +138,29 @@ namespace Exchange {
             VIDEO_DISPLAYPORT /* @text: DISPLAYPORT */ // also DisplayPort over USB-C
         };
 
-        enum ScreenResolution : uint8_t {
-            ScreenResolution_Unknown = 0 /* @text: Unknown */,
-            ScreenResolution_480i = 1 /* @text: 480i */,
-            ScreenResolution_480p = 2 /* @text: 480p */,
-            ScreenResolution_576i = 3 /* @text: 576i */,
-            ScreenResolution_576p = 4 /* @text: 576p */,
-            ScreenResolution_576p50Hz = 5 /* @text: 576p50 */,
-            ScreenResolution_720p = 6 /* @text: 720p */,
-            ScreenResolution_720p50Hz = 7 /* @text: 720p50 */,
-            ScreenResolution_1080i = 8 /* @text: 1080i */,
-            ScreenResolution_1080i25Hz = 9 /* @text: 1080i25 */,
-            ScreenResolution_1080i50Hz = 10 /* @text: 1080i50 */,
-            ScreenResolution_1080p = 11 /* @text: 1080p */,
-            ScreenResolution_1080p24Hz = 12 /* @text: 1080p24 */,
-            ScreenResolution_1080p25Hz = 13 /* @text: 1080p25 */,
-            ScreenResolution_1080p30Hz = 14 /* @text: 1080p30 */,
-            ScreenResolution_1080p50Hz = 15 /* @text: 1080p50 */,
-            ScreenResolution_1080p60Hz = 16 /* @text: 1080p60 */,
-            ScreenResolution_2160p30Hz = 17 /* @text: 2160p30 */,
-            ScreenResolution_2160p50Hz = 18 /* @text: 2160p50 */,
-            ScreenResolution_2160p60Hz = 19 /* @text: 2160p60 */,
-            ScreenResolution_4320p30Hz = 20 /* @text: 4320p30 */,
-            ScreenResolution_4320p60Hz = 21 /* @text: 4320p60 */
+        enum ScreenResolution : uint32_t {
+            ScreenResolution_Unknown = 0x000000 /* @text: Unknown */,
+            ScreenResolution_480i = 0x000001 /* @text: 480i */,
+            ScreenResolution_480p = 0x000002 /* @text: 480p */,
+            ScreenResolution_576i = 0x000004 /* @text: 576i */,
+            ScreenResolution_576p = 0x000008 /* @text: 576p */,
+            ScreenResolution_576p50Hz = 0x000010 /* @text: 576p50 */,
+            ScreenResolution_720p = 0x000020 /* @text: 720p */,
+            ScreenResolution_720p50Hz = 0x000040 /* @text: 720p50 */,
+            ScreenResolution_1080i = 0x000080 /* @text: 1080i */,
+            ScreenResolution_1080i25Hz = 0x000100 /* @text: 1080i25 */,
+            ScreenResolution_1080i50Hz = 0x000200 /* @text: 1080i50 */,
+            ScreenResolution_1080p = 0x000400 /* @text: 1080p */,
+            ScreenResolution_1080p24Hz = 0x000800 /* @text: 1080p24 */,
+            ScreenResolution_1080p25Hz = 0x001000 /* @text: 1080p25 */,
+            ScreenResolution_1080p30Hz = 0x002000 /* @text: 1080p30 */,
+            ScreenResolution_1080p50Hz = 0x004000 /* @text: 1080p50 */,
+            ScreenResolution_1080p60Hz = 0x008000 /* @text: 1080p60 */,
+            ScreenResolution_2160p30Hz = 0x010000 /* @text: 2160p30 */,
+            ScreenResolution_2160p50Hz = 0x020000 /* @text: 2160p50 */,
+            ScreenResolution_2160p60Hz = 0x040000 /* @text: 2160p60 */,
+            ScreenResolution_4320p30Hz = 0x080000 /* @text: 4320p30 */,
+            ScreenResolution_4320p60Hz = 0x100000 /* @text: 4320p60 */
         };
 
         enum CopyProtection : uint8_t {
@@ -178,31 +178,33 @@ namespace Exchange {
         // @alt supportedvideodisplays
         // @property
         // @brief Retrieves VideoOutputs
-        virtual uint32_t VideoOutputs(IVideoOutputIterator*& videoOutputs /* @out */) const = 0;
+        virtual Core::hresult VideoOutputs(IVideoOutputIterator*& videoOutputs /* @out */) const = 0;
         // @brief Retrieves DefaultResolution against given video Output
-        virtual uint32_t DefaultResolution(const VideoOutput videoOutput /* @index */, ScreenResolution& defaultResolution /* @out */) const = 0;
+        virtual Core::hresult DefaultResolution(const VideoOutput videoOutput /* @index */, ScreenResolution& defaultResolution /* @out */) const = 0;
         // @alt supportedresolutions
         // @brief Retrieves Resolution against given video Output
-        virtual uint32_t Resolutions(const VideoOutput videoOutput /* @index */, IScreenResolutionIterator*& resolutions /* @out */) const = 0;
+        virtual Core::hresult Resolutions(const VideoOutput videoOutput /* @index */, IScreenResolutionIterator*& resolutions /* @out */) const = 0;
         // @alt supportedhdcp
         // @brief Retrieves Hdcp
-        virtual uint32_t Hdcp(const VideoOutput videoOutput /* @index */, CopyProtection& hdcpVersion /* @out */) const = 0;
+        virtual Core::hresult Hdcp(const VideoOutput videoOutput /* @index */, CopyProtection& hdcpVersion /* @out */) const = 0;
         // @property
         // @brief Retrieves Host EDID
-        virtual uint32_t HostEDID(string& edid /* @out */) const = 0;
+        virtual Core::hresult HostEDID(string& edid /* @out */) const = 0;
         // @brief Retrieves HDR
-        virtual uint32_t HDR(bool& supportsHDR /*@out*/) const = 0;
+        virtual Core::hresult HDR(bool& supportsHDR /*@out*/) const = 0;
         // @property
         // @brief Retrieves Atoms
-        virtual uint32_t Atmos(bool& supportsAtmos /*@out*/) const = 0;
+        virtual Core::hresult Atmos(bool& supportsAtmos /*@out*/) const = 0;
         // @property
         // @brief Retrieves cec
-        virtual uint32_t CEC(bool& supportsCEC /*@out*/) const = 0;
+        virtual Core::hresult CEC(bool& supportsCEC /*@out*/) const = 0;
     };
 
     namespace JSONRPC {
         // @json 1.0.0
-        struct EXTERNAL DeviceCapabilities {
+        struct EXTERNAL IDeviceCapabilities {
+            virtual ~IDeviceCapabilities() = default;
+
             struct FirmwareInfo {
                 enum Yocto : uint8_t {
                     dunfell,
@@ -254,85 +256,62 @@ namespace Exchange {
                 uint32_t runs /* @brief Number of runs */;
             };
             using IStringIterator = RPC::IIteratorType<string, RPC::ID_STRINGITERATOR>;
-            struct IAddresses : virtual struct IUnknown {
+            struct IAddresses : virtual public Core::IUnknown {
                 // @brief Interface name
-                virtual uint32_t Name(string& name /* @out */) const = 0;
+                virtual Core::hresult Name(string& name /* @out */) const = 0;
                 // @brief Interface MAC address
-                virtual uint32_t Mac(string& mac /* @out */) const = 0;
+                virtual Core::hresult Mac(string& mac /* @out */) const = 0;
                 // @brief An array of Interface IP address
-                virtual uint32_t Ip(IStringIterator*& ip /* @out */) const = 0;
+                virtual Core::hresult Ip(IStringIterator*& ip /* @out */) const = 0;
             };
 
             // @property
             // @brief Retrieves Firware Information
-            virtual uint32_t FirmwareVersion(FirmwareInfo& value /* @out */) const = 0;
+            virtual Core::hresult FirmwareVersion(FirmwareInfo& value /* @out */) const = 0;
             // @property
             // @brief Retrieves DeviceInfo
-            virtual uint32_t DeviceInfo(DeviceData& value /* @out */) const = 0;
+            virtual Core::hresult DeviceInfo(DeviceData& value /* @out */) const = 0;
             // @property
             // @brief Retrieves SystemInfo
-            virtual uint32_t SystemInfo(SystemData& value /* @out */) const = 0;
+            virtual Core::hresult SystemInfo(SystemData& value /* @out */) const = 0;
             // @property
             // @brief Retrieves SocketInfo
-            virtual uint32_t SocketInfo(SocketData& value /* @out */) const = 0;
+            virtual Core::hresult SocketInfo(SocketData& value /* @out */) const = 0;
             // @lookup:Addresses
             // @brief Retrieves Addresses
-            virtual IAddresses* Addresses() = 0;
+            virtual IAddresses* Addresses(const uint32_t id) = 0;
 
-            struct IAudioCapabilities : virtual struct IUnknown {
+            struct IAudioCapabilities : virtual public Core::IUnknown {
                 // @property
                 // @brief Audio Output support
-                virtual uint32_t Port(IDeviceAudioCapabilities::AudioOutput& audioOutput /* @out */) const = 0;
+                virtual Core::hresult Port(IDeviceAudioCapabilities::AudioOutput& audioOutput /* @out */) const = 0;
                 // @property
                 // @brief Retrieves AudioCapabilities
-                virtual uint32_t Audio(IDeviceAudioCapabilities::IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
+                virtual Core::hresult Audio(IDeviceAudioCapabilities::IAudioCapabilityIterator*& audioCapabilities /* @out */) const = 0;
                 // @property
                 // @brief Retrieves MS12 Capabilities
-                virtual uint32_t MS12(IDeviceAudioCapabilities::IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
+                virtual Core::hresult MS12(IDeviceAudioCapabilities::IMS12CapabilityIterator*& ms12Capabilities /* @out */) const = 0;
                 // @property
                 // @brief Retrieves MS12 Audio Profiles
-                virtual uint32_t MS12Profiles(IDeviceAudioCapabilities::IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
+                virtual Core::hresult MS12Profiles(IDeviceAudioCapabilities::IMS12ProfileIterator*& ms12Profiles /* @out */) const = 0;
             };
             // @lookup:DeviceAudioCapabilities
             // @brief Retrieves DeviceAudioCapabilities
-            virtual IAudioCapabilities* DeviceAudioCapabilities(const IDeviceAudioCapabilities::AudioOutput audioOutput) = 0;
+            virtual IAudioCapabilities* DeviceAudioCapabilities(const IDeviceAudioCapabilities::AudioOutput audioOutput /* @index */) = 0;
 
-            struct IVideoCapabilities {
-                struct IVideoOutputCapabilities {
-                    // @property
-                    // @brief Video Output support
-                    virtual uint32_t Display(IDeviceVideoCapabilities::VideoOutput& videoOutput /* @out */) const = 0;
-                    // @property
-                    // @brief HDCP support
-                    virtual uint32_t HDCP(IDeviceVideoCapabilities::CopyProtection& hdcp /* @out */) const = 0;
-                    // @property
-                    // @brief  Supported resolutions
-                    virtual uint32_t Resolutions(IDeviceVideoCapabilities::IScreenResolutionIterator& screenResolution /* @out */) const = 0;
-                    // @property
-                    // @brief Default resolution
-                    virtual uint32_t DefaultResolution(IDeviceVideoCapabilities::ScreenResolution& screenResolution /* @out */) const = 0;
-                };
-
-                // @property
-                // @brief EDID of the host
-                virtual uint32_t HostEdid(string& edid /* @out */) const = 0;
-                // @property
-                // @brief Is HDR supported by this device
-                virtual uint32_t HDR(bool& hdr /* @out */) const = 0;
-                // @property
-                // @brief Is Atmos supported by this device
-                virtual uint32_t Atmos(bool& atoms) const = 0;
-                // @property
-                // @brief Is CEC supported by this device
-                virtual uint32_t CEC(bool& cec) const = 0;
-                // @lookup:VideoCapabilities
-                // @brief An array of VideoOutputCapabilities
-                virtual IVideoOutputCapabilities* VideoCapabilities(const IDeviceVideoCapabilities::VideoOutput videoOutput) = 0;
+            struct VideoOutputCaps {
+                IDeviceVideoCapabilities::VideoOutput videoOutput /* @brief Video Output support */;
+                IDeviceVideoCapabilities::CopyProtection hdcp /* @brief Video Output support */;
+                IDeviceVideoCapabilities::ScreenResolution outputResolutions /* @bitmask @brief Supported resolutions */;
+                IDeviceVideoCapabilities::ScreenResolution defaultResolution /* @brief Default resolution */;
             };
 
-            // @lookup:DeviceVideoCapabilities
+            using IVideoOutputCapsIterator = RPC::IIteratorType<VideoOutputCaps, ID_DEVICE_CAPABILITIES_VIDEO_CAPABILITIES>;
             // @brief Retrieves DeviceVideoCapabilities
-            virtual IVideoCapabilities* DeviceVideoCapabilities() = 0;
+            virtual Core::hresult DeviceVideoCapabilities(string& edid /* @out */,
+                    bool& hdr /* @out */, bool& cec /* @out */,
+                    IVideoOutputCapsIterator*& videoOutputCapabilities /* @out */) const = 0;
+
         };
     } // namespace JSONRPC
 }

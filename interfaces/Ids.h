@@ -376,7 +376,7 @@ namespace Exchange {
         
         ID_TESTAUTOMATIONMEMORY                      = RPC::IDS::ID_EXTERNAL_INTERFACE_OFFSET + 0x4F0,
         ID_TESTAUTOMATIONCOMRPC                      = ID_TESTAUTOMATIONMEMORY + 1,
-        ID_TESTAUTOMATIONCOMRPCINTERNAL              = ID_TESTAUTOMATIONMEMORY + 2
+        ID_TESTAUTOMATIONCOMRPCINTERNAL              = ID_TESTAUTOMATIONMEMORY + 2,
 
         ID_MONITOR                                   = RPC::IDS::ID_EXTERNAL_INTERFACE_OFFSET + 0x500,
         ID_MONITOR_NOTIFICATION                      = ID_MONITOR + 1,

@@ -104,8 +104,10 @@ namespace Exchange {
             // @brief Notifies that the web page requests to close its window
             virtual void PageClosure() = 0;
             // @brief A Base64 encoded JSON message from legacy $badger bridge
+            // @param message BridgeQuery string
             virtual void BridgeQuery(const string& message) = 0;
             // @brief Signals a state change of the Browser
+            // @param suspended Suspended(true) or Resumed (false)
             virtual void StateChange(const bool& suspended) = 0;
         };
 
@@ -165,17 +167,18 @@ namespace Exchange {
         // @brief Initiate garbage collection
         virtual uint32_t CollectGarbage() = 0;
         // @brief Delete directory
-        uint32_t Delete(const string& path) = 0;
+	// @param path: Path to be deleted
+        virtual uint32_t Delete(const string& path) = 0;
         // @property
-        // @brief languages: Browser prefered languages
-        uint32_t Languages(IStringIterator*& languages /* @out */) const = 0;
-        uint32_t Languages(IStringIterator* const languages) = 0;
+        // @brief Languages: Browser prefered languages
+        virtual uint32_t Languages(IStringIterator*& languages /* @out */) const = 0;
+        virtual uint32_t Languages(IStringIterator* const languages) = 0;
         // @property
-        // @brief headers: Headers to send on all requests that the browser makes
+        // @brief Headers: Headers to send on all requests that the browser makes
         virtual uint32_t Headers(IHeadersIterator*& headers /* @out */) const = 0;
         virtual uint32_t Headers(IHeadersIterator* const headers) = 0;
         // @property
-        // @brief state: Running state of the service
+        // @brief State: Running state of the service
         virtual uint32_t State(StateType& state /* @out */) const = 0;
         virtual uint32_t State(const StateType state) = 0;
     };
